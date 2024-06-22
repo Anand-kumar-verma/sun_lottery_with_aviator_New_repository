@@ -10,8 +10,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { get_user_data_fn, walletamount } from "../services/apicalling";
 import { dummy_aviator, endpoint, rupees } from "../services/urls";
 import { gray } from "./color";
+import CryptoJS from "crypto-js";
 
 const SpentBetLeft = ({ milliseconds, seconds, fk, formik }) => {
+  const value =
+  (localStorage.getItem("logindataen") &&
+    CryptoJS.AES.decrypt(
+      localStorage.getItem("logindataen"),
+      "anand"
+    )?.toString(CryptoJS.enc.Utf8)) ||
+  null;
+const user_id = value && JSON.parse(value)?.UserID;
   const dispatch = useDispatch();
   const aviator_login_data = useSelector(
     (state) => state.aviator.aviator_login_data
@@ -75,6 +84,7 @@ const SpentBetLeft = ({ milliseconds, seconds, fk, formik }) => {
     //   );
     setloding(true);
     const reqbody = {
+      id:user_id,
       userid: user?._id,
       amount: betValue || 0,
     };
@@ -147,6 +157,7 @@ const SpentBetLeft = ({ milliseconds, seconds, fk, formik }) => {
     //     `${endpoint.cash_out}?userid=${reqbody.userid}&amount=${reqbody.amount}&multiplier=${reqbody.multiplier}&gamesno=${reqbody?.gameno}`
     //   );
     const reqbody = {
+      id:user_id,
       userid: user?._id,
       amount: betValue * Number(`${seconds}.${milliseconds}`),
       multiplier: Number(`${sec}.${mili}`),

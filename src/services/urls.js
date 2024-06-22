@@ -68,6 +68,7 @@ export const endpoint = {
 
 
   node_api:{
+    my_history: `${domain}/api/v1/my-history-by-user-id`,
     login_with_node:`${domain}/api/v1/createuser`,
     main_wallet:`${domain}/main-wallet-to-aviator`,
     aviator_main:`${domain}/aviator-to-main-wallet`,

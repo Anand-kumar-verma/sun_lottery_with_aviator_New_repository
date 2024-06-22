@@ -9,8 +9,17 @@ import { gray } from "./color";
 import { dummy_aviator, endpoint, rupees } from "../services/urls";
 import { useDispatch, useSelector } from "react-redux";
 import { get_user_data_fn, walletamount } from "../services/apicalling";
+import CryptoJS from "crypto-js";
 
 const SpentBetRight = ({ milliseconds, seconds, fk, formik }) => {
+  const value =
+  (localStorage.getItem("logindataen") &&
+    CryptoJS.AES.decrypt(
+      localStorage.getItem("logindataen"),
+      "anand"
+    )?.toString(CryptoJS.enc.Utf8)) ||
+  null;
+const user_id = value && JSON.parse(value)?.UserID;
   const user = JSON.parse(localStorage.getItem("user"));
   const client = useQueryClient();
   const spent_amount2 = localStorage.getItem("spent_amount2");
@@ -73,6 +82,7 @@ const SpentBetRight = ({ milliseconds, seconds, fk, formik }) => {
     //   );
     setloding(true);
     const reqbody = {
+      id:user_id,
       userid: user?._id,
       amount: betValue || 0,
     };
@@ -145,6 +155,7 @@ const SpentBetRight = ({ milliseconds, seconds, fk, formik }) => {
     //   );
 
     const reqbody = {
+      id:user_id,
       userid: user?._id,
       amount: betValue * Number(`${seconds}.${milliseconds}`),
       multiplier: Number(`${sec}.${mili}`),

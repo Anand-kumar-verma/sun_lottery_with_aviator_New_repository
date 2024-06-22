@@ -128,6 +128,7 @@ const AirPlane = ({ formik, fk }) => {
      setTimeout(()=>{
       dispatch(byTimeIsEnableSound(false));
      },4000)
+     client.refetchQueries("historydata");
       dispatch(byTimeIsEnableMusic(false));
       fk.setFieldValue("isShadowPath", false);
       localStorage.removeItem("spent_amount1");

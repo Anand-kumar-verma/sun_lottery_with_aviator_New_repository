@@ -8,20 +8,26 @@ import { BsSignTurnRight } from "react-icons/bs";
 import { useQuery } from "react-query";
 import { endpoint } from "../../services/urls";
 import { get_user_data_fn } from "../../services/apicalling";
-import { useDispatch,useSelector } from "react-redux";
-const MybetHistory = () => {
-  const logindata = localStorage.getItem("aviator_data");
+import { useDispatch, useSelector } from "react-redux";
+import CryptoJS from "crypto-js";
 
+const MybetHistory = () => {
+  const value =
+    (localStorage.getItem("logindataen") &&
+      CryptoJS.AES.decrypt(
+        localStorage.getItem("logindataen"),
+        "anand"
+      )?.toString(CryptoJS.enc.Utf8)) ||
+    null;
+  const user_id = value && JSON.parse(value)?.UserID;
   const dispatch = useDispatch()
   const aviator_login_data = useSelector(
     (state) => state.aviator.aviator_login_data
   );
 
-  const userId = aviator_login_data && JSON.parse(aviator_login_data)?.id;
 
-  const [limit, setlimit] = useState(10);
   const { isLoading, data } = useQuery(
-    ["historydata", limit],
+    ["historydata"],
     () => getHistory(),
     {
       refetchOnMount: false,
@@ -29,12 +35,15 @@ const MybetHistory = () => {
     }
   );
 
-
   const getHistory = async () => {
+    const reqbody = {
+      user_id_node: user_id
+    }
     try {
-      const response = await axios.get(
-        `${endpoint.bet_history}?userid=${userId}&limit=${limit}`
-      );
+      // const response = await axios.get(
+      //   `${endpoint.bet_history}?userid=${userId}&limit=${limit}`
+      // )
+      const response = await axios.post(endpoint.node_api.my_history, reqbody)
       return response;
     } catch (e) {
       toast(e?.message);
@@ -43,6 +52,7 @@ const MybetHistory = () => {
   };
 
   const result = data?.data?.data || [];
+   console.log(data?.data)
 
   useEffect(() => {
     !aviator_login_data && get_user_data_fn(dispatch);
@@ -65,40 +75,38 @@ const MybetHistory = () => {
       {result?.map((i, index) => {
         return (
           <div
-            className={`${
-              i?.cashout_amount ?
-              "bg-green-800 bg-opacity-30 border-[2px] border-emerald-700" :
-              "bg-black"
-            } rounded-md px-1 mt-1 w-full`}
+            className={`${i?.amountcashed ?
+                "bg-green-800 bg-opacity-30 border-[2px] border-emerald-700" :
+                "bg-black"
+              } rounded-md px-1 mt-1 w-full`}
           >
             <div className=" grid grid-cols-3  place-items-start">
               <div>
                 <p className="flex flex-col">
                   <span className="text-[10px]">
-                    {moment(i?.datetime || Date.now()).format("HH:mm")}
+                    {moment(i?.createdAt || Date.now()).format("HH:mm")}
                   </span>
                   <span className="text-[10px]">
-                    {moment(i?.datetime || Date.now()).format("DD-MM-YYYY")}
+                    {moment(i?.createdAt || Date.now()).format("DD-MM-YYYY")}
                   </span>
                 </p>
               </div>
               <div className="flex gap-2 items-center">
-                <span className="text-[10px]">
+                <span className="!text-[10px]">
                   {Number(i?.amount || 0)?.toFixed(2)}
                 </span>
                 <span
-                  className={`bg-black rounded-full px-3 py-1 text-[10px] ${
-                    index % 2 === 0 ? "text-[#4e92ea]" : "text-red-500"
-                  }`}
+                  className={`bg-black rounded-full px-3 py-1 !text-[10px] ${index % 2 === 0 ? "text-[#4e92ea]" : "text-red-500"
+                    }`}
                 >
                   {Number(i?.multiplier || 0)?.toFixed(2)}x
                 </span>
               </div>
               <div className="w-full flex justify-end">
-                <div className="flex gap-2 items-center">
-                  {i?.cashout_amount && (
-                    <span className="text-[10px]">
-                      {Number(i?.cashout_amount || 0)?.toFixed(2)}
+                <div className="flex gap-2 items-center !text-[10px]">
+                  {i?.amountcashed && (
+                    <span className="!text-[10px]">
+                      {Number(i?.amountcashed)?.toFixed(2)}
                     </span>
                   )}
                   <span className="text-[15px]">
