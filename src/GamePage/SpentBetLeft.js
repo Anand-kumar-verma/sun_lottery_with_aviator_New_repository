@@ -101,7 +101,7 @@ const SpentBetLeft = ({ milliseconds, seconds, fk, formik }) => {
           topOffset: "20%",
         });
       } catch (e) {
-        toast(e?.response?.data?.message, {
+        toast(e?.response?.data?.msg, {
           position: "top-center",
           topOffset: "20%",
         });
