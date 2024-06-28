@@ -1,26 +1,28 @@
 import { CircularProgress } from '@mui/material';
 import axios from 'axios';
+import CryptoJS from "crypto-js";
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import toast from 'react-hot-toast';
 import { BiMessageRounded } from 'react-icons/bi';
 import { BsSignTurnRight } from 'react-icons/bs';
 import { useQuery } from 'react-query';
 import { endpoint } from '../services/urls';
-import { get_user_data_fn } from '../services/apicalling';
-import { useDispatch,useSelector } from "react-redux";
-const MyBets = () => {
-  const dispatch = useDispatch()
-  const aviator_login_data = useSelector(
-    (state) => state.aviator.aviator_login_data
-  );
 
-  const [limit, setlimit] = useState(10);
+const MyBets = () => {
+
   // const logindata = localStorage.getItem('aviator_data');
-  const userId = aviator_login_data && JSON.parse(aviator_login_data)?.id;
+  const value =
+  (localStorage.getItem("logindataen") &&
+    CryptoJS.AES.decrypt(
+      localStorage.getItem("logindataen"),
+      "anand"
+    )?.toString(CryptoJS.enc.Utf8)) ||
+  null;
+const user_id = value && JSON.parse(value)?.UserID;
 
   const { isLoading, data } = useQuery(
-    ["mybets", limit],
+    ["mybets"],
     () => getHistory(),
     {
       refetchOnMount: false,
@@ -28,23 +30,25 @@ const MyBets = () => {
     }
   );
 
-  useEffect(() => {
-    !aviator_login_data && get_user_data_fn(dispatch);
-  }, []);
+
 
   const getHistory = async () => {
+    const reqbody = {
+      user_id_node: user_id
+    }
     try {
-      const response = await axios.get(
-        `${endpoint.bet_history}?userid=${userId}&limit=${limit}`,
-      );
-     return response
+      // const response = await axios.get(
+      //   `${endpoint.bet_history}?userid=${userId}&limit=${limit}`
+      // )
+      const response = await axios.post(endpoint.node_api.my_history, reqbody)
+      return response;
     } catch (e) {
       toast(e?.message);
       console.log(e);
     }
   };
 
-  const result = data?.data?.data || []
+  const result = data?.data?.data || [];
   if (isLoading) return <div className="flex justify-center items-center">
     <CircularProgress />
   </div>;
@@ -55,7 +59,7 @@ const MyBets = () => {
           <p className="text-[10px] text-gray-500">Bet INT x</p>
           <p className="text-[10px] text-gray-500">Cash out, INR</p>
         </div>
-        {result?.slice(0,11)?.map((i, index) => {
+        {result?.map((i, index) => {
           return (
             <div
               className={`${
@@ -67,7 +71,7 @@ const MyBets = () => {
               <div className=" grid grid-cols-3 place-items-start">
                 <div>
                 <span className="text-[10px]">
-                      {moment(i?.datetime || Date.now()).format("HH:mm")}
+                      {moment(i?.createdAt || Date.now()).format("HH:mm")}
                     </span>
                 </div>
                 <div className="flex gap-2 items-center">
@@ -83,10 +87,10 @@ const MyBets = () => {
                   </span>
                 </div>
                 <div className="w-full flex justify-end">
-                  <div className="flex gap-2 items-center">
-                    {i?.cashout_amount && (
+                  <div className="flex gap-2 items-center text-[10px]">
+                    {i?.amountcashed && (
                       <span className="text-[10px]">
-                        {Number(i?.cashout_amount || 0)?.toFixed(2)}
+                        {Number(i?.amountcashed || 0)?.toFixed(2)}
                       </span>
                     )}
                     <span className="text-[15px]">

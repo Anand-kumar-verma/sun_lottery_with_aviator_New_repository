@@ -158,6 +158,28 @@ export const getAllBetsAviator = async () => {
   }
 };
 export const walletamount = async () => {
+  try {
+    const response = await axios.get(
+      `${endpoint.userwallet}?userid=${user_id}`
+    );
+    return response;
+  // try {
+  // const user = JSON.parse(localStorage.getItem("user"));
+
+  //   const reqbody = {
+  //     id:user?._id
+  //   }
+  //   const response = await axios.post(
+  //     `${dummy_aviator}/api/v1/get-wallet-amount-by-id`,
+  //     reqbody
+  //   );
+  //   return response;
+  } catch (e) {
+    toast(e?.message);
+    console.log(e);
+  }
+};
+export const walletamountAviator = async () => {
   // try {
   //   const response = await axios.get(
   //     `${endpoint.userwallet}?userid=${user_id}`
@@ -179,6 +201,7 @@ export const walletamount = async () => {
     console.log(e);
   }
 };
+
 export const allWithdrawlCashUserFn = async () => {
   try {
     const response = await axios.get(`${endpoint.all_withdrawl_user_list}`);

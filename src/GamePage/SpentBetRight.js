@@ -8,7 +8,7 @@ import { useQuery, useQueryClient } from "react-query";
 import { gray } from "./color";
 import { dummy_aviator, endpoint, rupees } from "../services/urls";
 import { useDispatch, useSelector } from "react-redux";
-import { get_user_data_fn, walletamount } from "../services/apicalling";
+import { get_user_data_fn, walletamount, walletamountAviator } from "../services/apicalling";
 import CryptoJS from "crypto-js";
 
 const SpentBetRight = ({ milliseconds, seconds, fk, formik }) => {
@@ -52,7 +52,7 @@ const user_id = value && JSON.parse(value)?.UserID;
 
   const { data: walletdata } = useQuery(
     ["walletamount_aviator"],
-    () => walletamount(),
+    () => walletamountAviator(),
     {
       refetchOnMount: false,
       refetchOnReconnect: true,

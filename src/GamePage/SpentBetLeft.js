@@ -7,7 +7,7 @@ import toast from "react-hot-toast";
 import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 import { useQuery, useQueryClient } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
-import { get_user_data_fn, walletamount } from "../services/apicalling";
+import { get_user_data_fn, walletamount, walletamountAviator } from "../services/apicalling";
 import { dummy_aviator, endpoint, rupees } from "../services/urls";
 import { gray } from "./color";
 import CryptoJS from "crypto-js";
@@ -49,7 +49,7 @@ const user_id = value && JSON.parse(value)?.UserID;
 
   const { isLoading: walletloding, data: walletdata } = useQuery(
     ["walletamount_aviator"],
-    () => walletamount(),
+    () => walletamountAviator(),
     {
       refetchOnMount: false,
       refetchOnReconnect: true,
@@ -99,12 +99,11 @@ const user_id = value && JSON.parse(value)?.UserID;
        
         if (response?.data?.msg === "Data save successfully") {
           localStorage.setItem("spent_amount1", reqbody?.amount);
-          client.refetchQueries("historydata");
-          client.refetchQueries("walletamount_aviator");
-          // startFly("left");
+          // client.refetchQueries("historydata");
+          // client.refetchQueries("walletamount_aviator");
 
           fk.setFieldValue("isStart1", true);
-          getHistory();
+          // getHistory();
         }
         toast.success(response?.data?.msg, {
           position: "top-center",
@@ -230,7 +229,7 @@ const user_id = value && JSON.parse(value)?.UserID;
       toast(e?.response?.data?.message);
       console.log(e);
     }
-    client.refetchQueries("walletamount_aviator");
+    // client.refetchQueries("walletamount_aviator");
     localStorage.removeItem("spent_amount1");
   };
 

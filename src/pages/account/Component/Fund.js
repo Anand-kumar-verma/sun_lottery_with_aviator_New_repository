@@ -8,7 +8,7 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import { endpoint, rupees } from '../../../services/urls';
 import CryptoJS from "crypto-js";
-import { MyProfileDataFn, walletamount } from '../../../services/apicalling';
+import { MyProfileDataFn, walletamount, walletamountAviator } from '../../../services/apicalling';
 import { useQuery, useQueryClient } from 'react-query';
 
 function Fund() {
@@ -53,6 +53,7 @@ function Fund() {
             setAmount(0)
             client.refetchQueries("walletamount_aviator")
             client.refetchQueries("myprofile")
+            client.refetchQueries("walletamount")
         } catch (e) {
             toast("Something went wrong")
         }
@@ -73,7 +74,7 @@ function Fund() {
 
     const { isLoading: walletloding, data: walletdata } = useQuery(
         ["walletamount_aviator"],
-        () => walletamount(),
+        () => walletamountAviator(),
         {
             refetchOnMount: false,
             refetchOnReconnect: true,

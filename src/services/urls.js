@@ -5,10 +5,12 @@ export const fron_end_main_domain = "https://sunlottery.fun";
 
 
 // export const domain = "https://sun-lottery-timer-tlhr.onrender.com/";
-export const domain = "http://192.168.18.183:4000";
-export const dummy_aviator = "http://192.168.18.183:4000"
+export const domain = "https://aviator-complete-backend-with-sunlottery.onrender.com";
+export const dummy_aviator = "https://aviator-complete-backend-with-sunlottery.onrender.com"
+// export const domain = "http://192.168.18.183:4000";
+// export const dummy_aviator = "http://192.168.18.183:4000";
 
-export const support_mail = ""
+export const support_mail = "" 
 // `support@sunlottrey.fun`;
 export const telegram_url = ""
 // `https://t.me/SunLottaryOfficial`;
@@ -59,7 +61,7 @@ export const endpoint = {
   aviator_login: `${baseUrl}/api/aviator/login`,
   get_data_by_user_id: `${baseUrl}/api/userProfile`,
   aviator_result: `${baseUrl}/api/aviator/result_cron`,
-  total_bet_history: `${baseUrl}/api/aviator/total-bet-histroy`,
+  total_bet_history: `${baseUrl}/api/aviator/total-bet-histroy`, // SHOWING ERROR
   bet_history: `${baseUrl}/api/aviator/bet_histroy`,
   result: `${baseUrl}/api/aviator/result`,
   wallet_data: `${baseUrl}/api/aviator/userwallet`,
@@ -68,6 +70,7 @@ export const endpoint = {
 
 
   node_api:{
+    get_leder_data:`${domain}/api/v1/get-ledger-data`,
     my_history: `${domain}/api/v1/my-history-by-user-id`,
     login_with_node:`${domain}/api/v1/createuser`,
     main_wallet:`${domain}/main-wallet-to-aviator`,

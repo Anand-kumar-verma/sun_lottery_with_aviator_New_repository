@@ -168,15 +168,6 @@ const AirPlane = ({ formik, fk }) => {
     return () => clearInterval(timerInterval);
   }
 
-  const setResultFuncton = async () => {
-    try {
-      await axios.get(`${endpoint.aviator_result}`);
-      client.refetchQueries("allresult");
-    } catch (e) {
-      toast(e?.message);
-      console.log(e);
-    }
-  };
 
   useEffect(() => {
     Number(milliseconds) >= 3 && fk.setFieldValue("isShadowPath", true);

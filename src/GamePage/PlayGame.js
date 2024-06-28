@@ -4,14 +4,18 @@ import { useFormik } from "formik";
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { CgDetailsMore } from "react-icons/cg";
-import { useQuery } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
 import { useSocket } from "../Shared/SocketContext";
 import aviatorimage from "../assets/aviatorimage.png";
 import crashmusic from "../assets/crashmusic.mp3";
 import howtoplay from "../assets/howtoplay.PNG";
-import { get_user_data_fn, walletamount } from "../services/apicalling";
+import {
+  get_user_data_fn,
+  walletamount,
+  walletamountAviator,
+} from "../services/apicalling";
 import { dummy_aviator, endpoint, rupees } from "../services/urls";
 import AirPlane from "./AirPlane";
 import AllBets from "./AllBets";
@@ -21,6 +25,7 @@ import Top from "./Top";
 import { gray } from "./color";
 
 const PlayGame = () => {
+  const client = useQueryClient();
   const dispatch = useDispatch();
   const aviator_login_data = useSelector(
     (state) => state.aviator.aviator_login_data
@@ -55,18 +60,11 @@ const PlayGame = () => {
   });
 
   const resultFunction = async () => {
-    const headers = {
-      "Content-Type": "application/json",
-      Accept: "application/json", // Add the 'Accept' header
-      // Add any other headers you need for CORS here
-    };
     try {
       const response = await axios.get(
-        `${dummy_aviator}/api/v1/get-game-history`,
-        {
-          headers,
-        }
+        `${dummy_aviator}/api/v1/get-game-history`
       );
+
       return response;
     } catch (e) {
       toast(e?.message);
@@ -76,7 +74,7 @@ const PlayGame = () => {
 
   const { isLoading: walletloding, data: walletdata } = useQuery(
     ["walletamount_aviator"],
-    () => walletamount(),
+    () => walletamountAviator(),
     {
       refetchOnMount: false,
       refetchOnReconnect: true,
@@ -85,7 +83,6 @@ const PlayGame = () => {
 
   const result = data?.data?.data || [];
   const walletAmount = walletdata?.data?.data || 0;
-
 
   const initialValue = {
     refetch: 1,
@@ -192,6 +189,7 @@ const PlayGame = () => {
     };
 
     const handleSetLoader = (setloder) => {
+      client.refetchQueries("walletamount_aviator");
       fk.setFieldValue("setloder", setloder);
     };
 
