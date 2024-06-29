@@ -85,6 +85,8 @@ function LoginWithEmail() {
         login_with_node({ ...reqbody, id: response?.data?.UserID })
         // get_user_data(response?.data?.UserID);
         setloding(false)
+        navigate("/dashboard");
+
       }
     } catch (e) {
       toast.error(e?.message);
@@ -108,7 +110,6 @@ function LoginWithEmail() {
         localStorage.setItem("user", JSON.stringify(response?.data?.data));
         setloding(false);
         storeCookies();
-        navigate("/dashboard");
         window.location.reload();
       }
     } catch (e) {

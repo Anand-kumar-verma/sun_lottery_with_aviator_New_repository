@@ -10,11 +10,13 @@ import { endpoint, rupees } from '../../../services/urls';
 import CryptoJS from "crypto-js";
 import { MyProfileDataFn, walletamount, walletamountAviator } from '../../../services/apicalling';
 import { useQuery, useQueryClient } from 'react-query';
+import CustomCircularProgress from '../../../Shared/CustomCircularProgress';
 
 function Fund() {
     const navigate = useNavigate();
     const [selected, setSelected] = React.useState('Fund Transfer');
     const [amount, setAmount] = React.useState(0);
+    const [loding ,setLoading] = React.useState(false)
     const client = useQueryClient()
     const value =
         (localStorage.getItem("logindataen") &&
@@ -47,6 +49,7 @@ function Fund() {
 
     async function sendWalletTOaviator(reqbody) {
         try {
+            setLoading(true);
             const response = await axios.post(endpoint.node_api.main_wallet, reqbody);
             toast(response?.data?.msg)
             setSelected('Fund Transfer');
@@ -54,18 +57,21 @@ function Fund() {
             client.refetchQueries("walletamount_aviator")
             client.refetchQueries("myprofile")
             client.refetchQueries("walletamount")
+            setLoading(false)
         } catch (e) {
             toast("Something went wrong")
         }
     }
     async function sendaviatorToWallet(reqbody) {
         try {
+            setLoading(true)
             const response = await axios.post(endpoint.node_api.aviator_main, reqbody);
             toast(response?.data?.msg)
             setSelected('Fund Transfer');
             setAmount(0)
             client.refetchQueries("walletamount_aviator")
             client.refetchQueries("myprofile")
+            setLoading(false)
         } catch (e) {
             toast("Something went wrong")
         }
@@ -172,6 +178,7 @@ function Fund() {
                                         <Button sx={style.paytmbtntwo}
                                             onClick={handleSubmit}> Submit</Button>
                                     </Box>
+                                    <CustomCircularProgress isLoading={loding}/>
                                 </>
 
 
