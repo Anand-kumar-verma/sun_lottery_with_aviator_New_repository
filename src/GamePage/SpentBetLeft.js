@@ -434,7 +434,7 @@ const user_id = value && JSON.parse(value)?.UserID;
                     if (customBetValue < 1.1) {
                       toast("Value should be greater than 1.1");
                     } else {
-                      fk.setFieldValue("autocashout2", !fk.values.autocashout1);
+                      fk.setFieldValue("autocashout1", !fk.values.autocashout1);
                     }
                   }}
                 />
