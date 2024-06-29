@@ -41,9 +41,8 @@ const user_id = value && JSON.parse(value)?.UserID;
   const [selectedValue, setSelectedValue] = useState("Bet");
   const [betValue, setBetValue] = useState(10);
   // const [openCustomDialogBox, setOpenCustomDialogBox] = useState(false);
-  const [gameno, setgameno] = useState({});
   const initialValues = {
-    custombetValue_auto_cash_out: (1.1).toFixed(2) || 0,
+    custombetValue_auto_cash_out: (0).toFixed(2) || 0,
     isbetActive: false,
   };
 
@@ -87,6 +86,7 @@ const user_id = value && JSON.parse(value)?.UserID;
       id:user_id,
       userid: user?._id,
       amount: betValue || 0,
+      button_type:"b1"
     };
     if (Number(wallet_amount?.wallet) < Number(reqbody?.amount))
       toast("Your wallet amount is low");
@@ -129,20 +129,7 @@ const user_id = value && JSON.parse(value)?.UserID;
     }
   }, [fk.values.isFlying]);
 
-  const getHistory = async () => {
-    const userid =
-      (aviator_login_data && JSON.parse(aviator_login_data)?.id) || 2;
 
-    try {
-      const response = await axios.get(
-        `${endpoint.bet_history}?userid=${userid}&limit=${10}`
-      );
-      setgameno(response?.data?.data[0]?.gamesno);
-    } catch (e) {
-      toast(e?.message);
-      console.log(e);
-    }
-  };
 
   const cashOut = async (sec, mili) => {
     // const reqbody = {
@@ -160,6 +147,7 @@ const user_id = value && JSON.parse(value)?.UserID;
       userid: user?._id,
       amount: betValue * Number(`${seconds}.${milliseconds}`),
       multiplier: Number(`${sec}.${mili}`),
+      button_type:"b1"
     };
 
    
@@ -305,7 +293,7 @@ const user_id = value && JSON.parse(value)?.UserID;
               </p>
               <CiCirclePlus
                 className="cursor-pointer text-2xl text-gray-400"
-                onClick={() => setBetValue(betValue + 1)}
+                onClick={() => setBetValue(betValue + 1>1000?betValue:betValue+1)}
               />
             </div>
             <div className="grid grid-cols-2 text-center text-[12px] lg:pt-2 pt-[2px] gap-1">
@@ -435,18 +423,26 @@ const user_id = value && JSON.parse(value)?.UserID;
               Auto Cash Out{" "}
               <span>
                 {" "}
-                <Switch
+              
+                  <Switch
                   checked={fk.values.autocashout1}
                   color="secondary"
                   onClick={() => {
-                    fk.setFieldValue("autocashout1", !fk.values.autocashout1);
+                    const customBetValue = Number(
+                      leftbitfk?.values?.custombetValue_auto_cash_out || 0
+                    );
+                    if (customBetValue < 1.1) {
+                      toast("Value should be greater than 1.1");
+                    } else {
+                      fk.setFieldValue("autocashout2", !fk.values.autocashout1);
+                    }
                   }}
                 />
               </span>
             </p>
             <p>
               <input
-                readOnly={!fk.values.autocashout1 === true}
+                readOnly={!fk.values.autocashout1 === false}
                 placeholder="Enter Value"
                 className={`!bg-black px-2 text-[12px] rounded-full py-1 w-[60%] outline-none ${
                   fk.values.autocashout1

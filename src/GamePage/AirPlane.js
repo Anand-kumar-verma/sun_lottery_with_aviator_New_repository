@@ -1,6 +1,4 @@
-import axios from "axios";
 import React, { useEffect, useMemo, useState } from "react";
-import toast from "react-hot-toast";
 import { useQueryClient } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
 import { useMediaQuery } from "react-responsive";
@@ -13,7 +11,6 @@ import {
   byTimeIsEnableMusic,
   byTimeIsEnableSound,
 } from "../redux/slices/counterSlice";
-import { endpoint } from "../services/urls";
 import {
   demomobile,
   demomobilesec,
@@ -386,7 +383,7 @@ const AirPlane = ({ formik, fk }) => {
                 </p>
               )}
               <div className="!font-semibold grid grid-cols-3 lg:w-[225px] w-[190px]">
-                <span className="col-span-2">{`${seconds + 1}.${String(
+                <span className="col-span-2">{`${seconds}.${String( // phle yha par seconds+1 thA
                   milliseconds
                 ).padStart(2, "0")}`}</span>
                 <span style={{ marginLeft: "4px" }}>x</span>
@@ -400,14 +397,14 @@ const AirPlane = ({ formik, fk }) => {
       <div className="flex w-[100%] lg:gap-3 gap-0 flex-col lg:flex-row lg:mt-0 md:mt-[20%] sm:mt-[20%]">
         <SpentBetLeft
           milliseconds={milliseconds}
-          seconds={seconds + 1}
+          seconds={seconds}  // phle yha par seconds+1 thA
           fk={fk}
           startFly={startFly}
-          formik={formik}
+          formik={formik} 
         />
         <SpentBetRight
           milliseconds={milliseconds}
-          seconds={seconds + 1}
+          seconds={seconds}  // phle yha par seconds+1 thA
           fk={fk}
           startFly={startFly}
         />
