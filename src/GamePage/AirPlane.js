@@ -29,7 +29,6 @@ import {
 } from "./DottedPoint";
 import SpentBetLeft from "./SpentBetLeft";
 import SpentBetRight from "./SpentBetRight";
-import betmusic from "../assets/place_your_bet.wav";
 
 const AirPlane = ({ formik, fk }) => {
   const socket = useSocket();
@@ -335,9 +334,7 @@ const AirPlane = ({ formik, fk }) => {
         `}
             >
               <div className="flex justify-center flex-col items-center gap-1 lg:gap-3">
-                <audio ref={audioRefMusic} hidden>
-                  <source src={betmusic} type="audio/wav" />
-                </audio>
+              
                 <img
                   src={
                     loderImage ||
