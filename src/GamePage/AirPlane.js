@@ -20,15 +20,12 @@ import {
 import {
   ButtomDottedPoint,
   ButtomDottedPointMoveable,
-
-
-
-
   LeftDottedPoint,
   LeftDottedPointMoveable,
 } from "./DottedPoint";
 import SpentBetLeft from "./SpentBetLeft";
 import SpentBetRight from "./SpentBetRight";
+import betmusic from "../assets/place_your_bet.mp3";
 
 const AirPlane = ({ formik, fk }) => {
   const socket = useSocket();
@@ -43,7 +40,6 @@ const AirPlane = ({ formik, fk }) => {
     x: 0,
     y: 0,
   });
-  const audioRefMusic = useRef(null);
   const [crash, setcrashed] = useState(false);
   const [combineTime, setcombineTime] = useState("0_0");
   const [initialCordinate, setInitialCordinate] = useState(0);
@@ -51,7 +47,7 @@ const AirPlane = ({ formik, fk }) => {
   let seconds = Number(combineTime?.split("_")?.[1]);
   const client = useQueryClient();
   let bool = true;
-
+  const audioRefMusic = useRef(null);
   useEffect(() => {
     const handleNewMessage = (newMessage) => {
       startFly(newMessage);
@@ -66,6 +62,7 @@ const AirPlane = ({ formik, fk }) => {
     };
 
     const handleSetLoader = (setloder) => {
+     setloder && handlePlayMusic()
       fk.setFieldValue("setloder", setloder);
       setcombineTime("0_0");
     };
@@ -180,21 +177,39 @@ const AirPlane = ({ formik, fk }) => {
     fk.setFieldValue("closeButtomDot", false);
   }, 10000);
 
+  const handlePlayMusic = async () => {
+    try {
+      if (audioRefMusic && audioRefMusic.current) {
+        await audioRefMusic.current.play();
+        console.log("Audio played successfully");
+      } else {
+        console.error("audioRefMusic or audioRefMusic.current is null or undefined");
+      }
+    } catch (error) {
+      console.error("Error during play:", error);
+    }
+  };
+  
   return (
     <>
       <div
         className={`${!waiting_aviator && "lg:py-8 py-9"
           } moved parentdiv relative lg:h-[60vh]  h-[35vh] w-[99.8%] overflow-hidden  rounded-3xl mt-1 border-[1px] border-white border-opacity-10`}
       >
+       
+          <audio ref={audioRefMusic} hidden>
+            <source src={betmusic} type="audio/mp3" />
+          </audio>
+       
         <>
           {useMemo(() => {
             return (
               <img
                 src={backgroundImage_url}
                 className={`${backgroundImage_url ===
-                    "https://res.cloudinary.com/do7kimovl/image/upload/v1709114502/circle_dafpdo.svg"
-                    ? "absolute  -bottom-[400%] left-0 rotate_background_image !z-0 bg-gradient-to-l from-[#000000] via-[#5a125a] to-[#0a070e] bg-opacity-5 w-[900%] h-[900%]"
-                    : "bgimagedynamic !z-0 absolute  top-0 left-0 h-full w-[99.8%]"
+                  "https://res.cloudinary.com/do7kimovl/image/upload/v1709114502/circle_dafpdo.svg"
+                  ? "absolute  -bottom-[400%] left-0 rotate_background_image !z-0 bg-gradient-to-l from-[#000000] via-[#5a125a] to-[#0a070e] bg-opacity-5 w-[900%] h-[900%]"
+                  : "bgimagedynamic !z-0 absolute  top-0 left-0 h-full w-[99.8%]"
                   }  object-cover `}
               />
             );
@@ -209,8 +224,8 @@ const AirPlane = ({ formik, fk }) => {
               >
                 <path
                   d={`M -10 ${initialCordinate.y + 24} C ${bottomLeftCoordinate.x < 300
-                      ? bottomLeftCoordinate.x - 40
-                      : 300
+                    ? bottomLeftCoordinate.x - 40
+                    : 300
                     } ${initialCordinate.y + 20}, ${bottomLeftCoordinate.x < 500
                       ? bottomLeftCoordinate.x - 20
                       : 500
@@ -226,8 +241,8 @@ const AirPlane = ({ formik, fk }) => {
                 />
                 <path
                   d={`M -10 ${initialCordinate.y + 25} C ${bottomLeftCoordinate.x < 300
-                      ? bottomLeftCoordinate.x - 40
-                      : 300
+                    ? bottomLeftCoordinate.x - 40
+                    : 300
                     } ${initialCordinate.y + 23}, ${bottomLeftCoordinate.x < 500
                       ? bottomLeftCoordinate.x - 20
                       : 500
@@ -248,8 +263,8 @@ const AirPlane = ({ formik, fk }) => {
                 <path
                   className="!absolute !bottom-0 !left-0"
                   d={`M -10 ${initialCordinate.y} C ${bottomLeftCoordinate.x < 80
-                      ? bottomLeftCoordinate.x - 10
-                      : 80
+                    ? bottomLeftCoordinate.x - 10
+                    : 80
                     } ${initialCordinate.y}, ${bottomLeftCoordinate.x < 120
                       ? bottomLeftCoordinate.x - 5
                       : 120
@@ -264,8 +279,8 @@ const AirPlane = ({ formik, fk }) => {
                 <path
                   className="!absolute !bottom-0 !left-0"
                   d={`M -10 ${initialCordinate.y} C ${bottomLeftCoordinate.x < 80
-                      ? bottomLeftCoordinate.x - 10
-                      : 80
+                    ? bottomLeftCoordinate.x - 10
+                    : 80
                     } ${initialCordinate.y}, ${bottomLeftCoordinate.x < 120
                       ? bottomLeftCoordinate.x - 5
                       : 120
@@ -334,7 +349,7 @@ const AirPlane = ({ formik, fk }) => {
         `}
             >
               <div className="flex justify-center flex-col items-center gap-1 lg:gap-3">
-              
+
                 <img
                   src={
                     loderImage ||
