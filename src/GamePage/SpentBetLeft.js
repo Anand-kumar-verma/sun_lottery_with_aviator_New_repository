@@ -11,6 +11,7 @@ import { get_user_data_fn, walletamount, walletamountAviator } from "../services
 import { dummy_aviator, endpoint, rupees } from "../services/urls";
 import { gray } from "./color";
 import CryptoJS from "crypto-js";
+import betmusic from "../assets/place_your_bet.wav";
 
 const SpentBetLeft = ({ milliseconds, seconds, fk, formik }) => {
   const value =
@@ -387,6 +388,7 @@ const user_id = value && JSON.parse(value)?.UserID;
                       : fk.values.isStart1 && !fk.values.isFlying
                       ? "Cancel"
                       : "BET"}
+                      
                   </span>
                   <span
                     className={`text-lg text-center`}
