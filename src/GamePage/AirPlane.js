@@ -1,3 +1,4 @@
+import { Dialog } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { useQueryClient } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +7,6 @@ import { useSocket } from "../Shared/SocketContext";
 import loderImage from "../assets/loderimage.png";
 import plane1 from "../assets/plan1.svg";
 import plane2 from "../assets/plan2.svg";
-import win from "../assets/win.png";
 import {
   byTimeIsEnableMusic,
   byTimeIsEnableSound,
@@ -15,7 +15,7 @@ import {
   demomobile,
   demomobilesec,
   demomolap,
-  demomolaponesec
+  demomolaponesec,
 } from "./AnimationAirPlan";
 import {
   ButtomDottedPoint,
@@ -32,6 +32,7 @@ const AirPlane = ({ formik, fk }) => {
   const backgroundImage_url = useSelector(
     (state) => state.aviator.backgroundImage_url
   );
+  const [waiting_for_next_round, set_waiting_for_next_round] = useState(true);
   const waiting_aviator = useSelector((state) => state.aviator.waiting_aviator);
   const isMediumScreen = useMediaQuery({ minWidth: 800 });
   const [bottomLeftCoordinate, setBottomLeftCoordinates] = useState({
@@ -122,10 +123,10 @@ const AirPlane = ({ formik, fk }) => {
       mainDiv.style.animation = "";
       mainDiv.style.animation = "thirdAnimation .5s linear forwards running";
 
-     setTimeout(()=>{
-      dispatch(byTimeIsEnableSound(false));
-     },4000)
-     client.refetchQueries("historydata");
+      setTimeout(() => {
+        dispatch(byTimeIsEnableSound(false));
+      }, 4000);
+      client.refetchQueries("historydata");
       dispatch(byTimeIsEnableMusic(false));
       fk.setFieldValue("isShadowPath", false);
       localStorage.removeItem("spent_amount1");
@@ -165,14 +166,22 @@ const AirPlane = ({ formik, fk }) => {
     return () => clearInterval(timerInterval);
   }
 
-
   useEffect(() => {
     Number(milliseconds) >= 3 && fk.setFieldValue("isShadowPath", true);
   }, [milliseconds]);
 
+  useEffect(() => {
+    fk.values.setloder === true && set_waiting_for_next_round(false);
+  }, [fk.values.setloder]);
+
   setTimeout(() => {
     fk.setFieldValue("closeButtomDot", false);
   }, 10000);
+
+  // if (waiting_for_next_round)
+  //   return useMemo(() => {
+  //     return <div>HIii</div>;
+  //   }, []);
 
   return (
     <>
@@ -289,7 +298,7 @@ const AirPlane = ({ formik, fk }) => {
               </svg>
             ))}
           <div className="maindiv absolute bottom-[20px] left-[20px]  animate-slidein infinite ">
-            {useMemo(() => {
+            {/* {useMemo(() => {
               return (
                 fk.values.isEnablingWinner && (
                   <p className="winslider z-20 rounded-full px-4 py-1">
@@ -303,7 +312,7 @@ const AirPlane = ({ formik, fk }) => {
                   </p>
                 )
               );
-            }, [fk.values.isEnablingWinner])}
+            }, [fk.values.isEnablingWinner])} */}
 
             {useMemo(() => {
               return (
@@ -382,12 +391,27 @@ const AirPlane = ({ formik, fk }) => {
                   FLEW AWAY!
                 </p>
               )}
-              <div className="!font-semibold grid grid-cols-3 lg:w-[225px] w-[190px]">
-                <span className="col-span-2">{`${seconds}.${String( // phle yha par seconds+1 thA
-                  milliseconds
-                ).padStart(2, "0")}`}</span>
-                <span style={{ marginLeft: "4px" }}>x</span>
-              </div>
+              {waiting_for_next_round ? (
+                <Dialog open={true}>
+                  <div>
+                    <div className="!font-semibold grid grid-cols-3 lg:w-[225px] w-[190px]">
+                      <span className="col-span-2">{`${seconds}.${String(
+                        // phle yha par seconds+1 thA
+                        milliseconds
+                      ).padStart(2, "0")}`}</span>
+                      <span style={{ marginLeft: "4px" }}>x</span>
+                    </div>
+                  </div>
+                </Dialog>
+              ) : (
+                <div className="!font-semibold grid grid-cols-3 lg:w-[225px] w-[190px]">
+                  <span className="col-span-2">{`${seconds}.${String(
+                    // phle yha par seconds+1 thA
+                    milliseconds
+                  ).padStart(2, "0")}`}</span>
+                  <span style={{ marginLeft: "4px" }}>x</span>
+                </div>
+              )}
             </p>
           )}
         </>
@@ -397,14 +421,14 @@ const AirPlane = ({ formik, fk }) => {
       <div className="flex w-[100%] lg:gap-3 gap-0 flex-col lg:flex-row lg:mt-0 md:mt-[20%] sm:mt-[20%]">
         <SpentBetLeft
           milliseconds={milliseconds}
-          seconds={seconds}  // phle yha par seconds+1 thA
+          seconds={seconds} // phle yha par seconds+1 thA
           fk={fk}
           startFly={startFly}
-          formik={formik} 
+          formik={formik}
         />
         <SpentBetRight
           milliseconds={milliseconds}
-          seconds={seconds}  // phle yha par seconds+1 thA
+          seconds={seconds} // phle yha par seconds+1 thA
           fk={fk}
           startFly={startFly}
         />
