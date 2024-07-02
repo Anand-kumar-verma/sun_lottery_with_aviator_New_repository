@@ -51,9 +51,9 @@ const Top = () => {
               </p>
               <p>
                 <span className="!text-[12px] text-gray-500">
-                  Win,USD:{" "}
+                  Win,INR:{" "}
                 </span>
-                <span className="!text-[12px] text-white">₹{Number(item?.amountcashed || 0)?.toFixed(2)}</span>
+                <span className="!text-[12px] text-white">{Number(item?.amountcashed || 0)?.toFixed(2)}</span>
               </p>
             </div>
             <div className="flex gap-2 items-">
@@ -65,8 +65,8 @@ const Top = () => {
           <div className="bg-black flex justify-between items-center px-4">
             <p className="flex gap-10 items-center">
               <span className="!text-[10px] text-gray-500"> 
-                {moment(item?.createdAt)?.format("DD-MM-YYYY")}{" "}
-                {moment(item?.createdAt)?.format("HH:mm:ss")}</span>
+                {moment(item?.createdAt)?.format("MM-YYYY")}{" "}
+               </span>
               <p>
                 <span className="!text-[12px] text-gray-500">Round: </span>
                 <span className="!text-[12px] text-white">{item?.multiplier}x</span>
