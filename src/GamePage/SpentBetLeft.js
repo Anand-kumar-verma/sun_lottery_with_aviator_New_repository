@@ -27,8 +27,6 @@ const user_id = value && JSON.parse(value)?.UserID;
     (state) => state.aviator.aviator_login_data
   );
   const user = JSON.parse(localStorage.getItem("user"));
-  const first_rechange =
-    aviator_login_data && JSON.parse(aviator_login_data)?.first_recharge;
   const client = useQueryClient();
   const spent_amount1 = localStorage.getItem("spent_amount1");
   const amount_total =
