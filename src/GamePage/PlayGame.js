@@ -23,13 +23,15 @@ import AccountMenu from "./MenuItems";
 import MyBets from "./MyBets";
 import Top from "./Top";
 import { gray } from "./color";
-
+import { just_start_after_waitingFun } from "../redux/slices/counterSlice";
+import plane1 from "../assets/front-aviator-image.svg";
 const PlayGame = () => {
   const client = useQueryClient();
   const dispatch = useDispatch();
   const aviator_login_data = useSelector(
     (state) => state.aviator.aviator_login_data
   );
+  const [waiting_sec, setWaitingSec] = useState(10);
   const isMediumScreen = useMediaQuery({ minWidth: 800 });
   const [value, setValue] = React.useState(0);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -130,6 +132,10 @@ const PlayGame = () => {
   const audioRefSound = useRef(null);
   const isEnableMusic = useSelector((state) => state.aviator.isEnableMusic);
   const isEnableSound = useSelector((state) => state.aviator.isEnableSound);
+  const waiting_aviator = useSelector((state) => state.aviator.waiting_aviator);
+  const just_start_after_waiting = useSelector(
+    (state) => state.aviator.just_start_after_waiting
+  );
   const byTimeEnablingMusic = useSelector(
     (state) => state.aviator.byTimeEnablingMusic
   );
@@ -208,24 +214,23 @@ const PlayGame = () => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   if (fk.values.setcolorofdigit) {
-  //     dispatch(waitingAviatorFun(false));
-  //     setTimeout(() => {
-  //       dispatch(just_start_after_waitingFun(false));
-  //     }, 2000);
-  //   }
-  // }, [fk.values.setcolorofdigit]);
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(just_start_after_waitingFun(false));
+    }, 2000);
+  }, []);
 
-  // useEffect(() => {
-  //   if (!waiting_aviator) {
-  //     let sec = 10;
-  //     const interval = setInterval(() => {
-  //       setWaitingSec(--sec);
-  //       if (sec === 0) clearInterval(interval);
-  //     }, 200);
-  //   }
-  // }, [waiting_aviator]);
+  useEffect(() => {
+    if (!waiting_aviator) {
+      let sec = 10;
+      const interval = setInterval(() => {
+        setWaitingSec(--sec);
+        if (sec === 0) clearInterval(interval);
+      }, 200);
+    }
+  }, [waiting_aviator]);
+
+
 
   // useEffect(() => {
   //   const handleBeforeUnload = (event) => {
@@ -403,29 +408,29 @@ const PlayGame = () => {
   //     </>
   //   );
 
-  // if (just_start_after_waiting)
-  //   return (
-  //     <>
-  //       <div className="h-full w-full flex flex-col justify-center items-center overflow-y-hidden no-scrollbar">
-  //         <img src={plane1} className="lg:w-[30%] lg:h-[30%] w-[70%] h-[20%]" />
-  //         <p className="transparentColor bg-gradient-to-l from-[#ff013c] to-[#C3384E] text-[5rem] font-semibold">
-  //           Aviator
-  //         </p>
-  //         <div className="flex gap-2 items-center">
-  //           <div className="lg:h-[20px] h-[15px] w-[150px] lg:w-[500px] rounded-r-full rounded-l-full relative  bg-gradient-to-l from-[#ff013c] to-[#C3384E] ">
-  //             <div className="loder-waiting-for-next-round-start !rounded-full"></div>
-  //           </div>
-  //           <p className="!text-[#C3384E] !text-2xl">
-  //             {String(waiting_sec) + "0"}%
-  //           </p>
-  //         </div>
+  if (just_start_after_waiting)
+    return (
+      <>
+        <div className="h-full w-full flex flex-col justify-center items-center overflow-y-hidden no-scrollbar">
+          <img src={plane1} className="lg:w-[30%] lg:h-[30%] w-[70%] h-[20%]" />
+          <p className="transparentColor bg-gradient-to-l from-[#ff013c] to-[#C3384E] text-[5rem] font-semibold">
+            Aviator
+          </p>
+          <div className="flex gap-2 items-center">
+            <div className="lg:h-[20px] h-[15px] w-[150px] lg:w-[500px] rounded-r-full rounded-l-full relative  bg-gradient-to-l from-[#ff013c] to-[#C3384E] ">
+              <div className="loder-waiting-for-next-round-start !rounded-full"></div>
+            </div>
+            <p className="!text-[#C3384E] !text-2xl">
+              {String(waiting_sec) + "0"}%
+            </p>
+          </div>
 
-  //         <p className="!text-[#C3384E] !text-2xl">
-  //           00:{String(waiting_sec).padStart(2, "0")}
-  //         </p>
-  //       </div>
-  //     </>
-  //   );
+          <p className="!text-[#C3384E] !text-2xl">
+            00:{String(waiting_sec).padStart(2, "0")}
+          </p>
+        </div>
+      </>
+    );
   // if (please_reconnect_the_server)
   //   return (
   //     <>
