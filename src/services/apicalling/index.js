@@ -101,6 +101,17 @@ export const MyHistoryFn = async (gid) => {
   }
 };
 
+export const GetTopFn = async () => {
+  try {
+    const response = await axios.get(
+      endpoint.node_api.get_top_users
+    );
+    return response;
+  } catch (e) {
+    toast(e?.message);
+    console.log(e);
+  }
+};
 export const My_All_HistoryFn = async (gid) => {
   try {
     const response = await axios.get(
