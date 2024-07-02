@@ -31,8 +31,6 @@ const SpentBetRight = ({ milliseconds, seconds, fk, formik }) => {
   const aviator_login_data = useSelector(
     (state) => state.aviator.aviator_login_data
   );
-  const first_rechange =
-    aviator_login_data && JSON.parse(aviator_login_data)?.first_recharge;
 
   const amount_total =
     client.getQueriesData("walletamount_aviator")?.[0]?.[1]?.data?.data || 0;
@@ -101,10 +99,10 @@ const SpentBetRight = ({ milliseconds, seconds, fk, formik }) => {
         );
         if (response?.data?.msg === "Data save successfully") {
           localStorage.setItem("spent_amount2", reqbody?.amount);
-          client.refetchQueries("historydata");
-          client.refetchQueries("walletamount_aviator");
+          // client.refetchQueries("historydata");
+          // client.refetchQueries("walletamount_aviator");
           fk.setFieldValue("isStart2", true);
-          getHistory();
+          // getHistory();
         }
         toast.success(response?.data?.msg, {
           position: "top-center",
@@ -117,9 +115,8 @@ const SpentBetRight = ({ milliseconds, seconds, fk, formik }) => {
         });
         console.log(e);
       }
+      rightbitfk.setFieldValue("isbetActive", false);
     }
-    rightbitfk.setFieldValue("isbetActive", false);
-
     setloding(false);
   };
   useEffect(() => {
@@ -130,20 +127,7 @@ const SpentBetRight = ({ milliseconds, seconds, fk, formik }) => {
     }
   }, [fk.values.isFlying]);
 
-  const getHistory = async () => {
-    const userid =
-      (aviator_login_data && JSON.parse(aviator_login_data)?.id) || 2;
 
-    try {
-      const response = await axios.get(
-        `${endpoint.bet_history}?userid=${userid}&limit=${10}`
-      );
-      setgameno(response?.data?.data[0]?.gamesno);
-    } catch (e) {
-      toast(e?.message);
-      console.log(e);
-    }
-  };
 
   const cashOut = async (sec, mili) => {
     // const reqbody = {
