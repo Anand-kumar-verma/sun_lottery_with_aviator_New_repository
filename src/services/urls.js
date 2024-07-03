@@ -5,10 +5,10 @@ export const fron_end_main_domain = "https://sunlottery.fun";
 
 
 // export const domain = "https://sun-lottery-timer-tlhr.onrender.com/";
-// export const domain = "https://aviator-complete-backend-with-sunlottery.onrender.com";
-// export const dummy_aviator = "https://aviator-complete-backend-with-sunlottery.onrender.com"
-export const domain = "http://192.168.18.183:4000";
-export const dummy_aviator = "http://192.168.18.183:4000";
+export const domain = "https://aviator-complete-backend-with-sunlottery.onrender.com";
+export const dummy_aviator = "https://aviator-complete-backend-with-sunlottery.onrender.com"
+// export const domain = "http://192.168.18.183:4000";
+// export const dummy_aviator = "http://192.168.18.183:4000";
 
 export const support_mail = "" 
 // `support@sunlottrey.fun`;
