@@ -1,12 +1,11 @@
 import { Avatar, Divider } from "@mui/material";
+import moment from "moment";
 import React from "react";
-import { BiMessageRounded } from "react-icons/bi";
 import { BsSignTurnRight } from "react-icons/bs";
 import { FaShare } from "react-icons/fa";
 import { LuMessageCircle } from "react-icons/lu";
-import { GetTopFn } from "../services/apicalling";
 import { useQuery } from "react-query";
-import moment from "moment";
+import { GetTopFn } from "../services/apicalling";
 
 const Top = () => {
   const { isLoading, data } = useQuery(
