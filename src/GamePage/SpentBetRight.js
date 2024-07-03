@@ -268,7 +268,7 @@ const SpentBetRight = ({ milliseconds, seconds, fk, formik }) => {
                   <p
                     className={`bg-black rounded-full cursor-pointer lg:py-1 py-[4px] lg:text-[8px]`}
                     onClick={() => {
-                      !spent_amount2 && setBetValue(i);
+                      if (!spent_amount2) setBetValue(i);
                     }}
                   >
                     {i}
