@@ -12,6 +12,7 @@ import { get_user_data_fn, walletamountAviator } from "../services/apicalling";
 import { dummy_aviator, rupees } from "../services/urls";
 import { gray } from "./color";
 
+
 const SpentBetLeft = ({ milliseconds, seconds, fk, formik }) => {
   const value =
   (localStorage.getItem("logindataen") &&
@@ -164,8 +165,7 @@ const user_id = value && JSON.parse(value)?.UserID;
             </span>
             <span className="">{`${sec || 0}.${mili || 0} x`}</span>
           </p>
-
-          <Button
+           <Button
             sx={{
               padding: 0,
               overflow: "hidden",
@@ -385,6 +385,7 @@ const user_id = value && JSON.parse(value)?.UserID;
                       : fk.values.isStart1 && !fk.values.isFlying
                       ? "Cancel"
                       : "BET"}
+                      
                   </span>
                   <span
                     className={`text-lg text-center`}

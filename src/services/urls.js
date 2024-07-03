@@ -75,6 +75,7 @@ export const endpoint = {
     login_with_node:`${domain}/api/v1/createuser`,
     main_wallet:`${domain}/main-wallet-to-aviator`,
     aviator_main:`${domain}/aviator-to-main-wallet`,
+    get_top_users: `${domain}/api/v1/get-top-users`,
   }
   
 };
