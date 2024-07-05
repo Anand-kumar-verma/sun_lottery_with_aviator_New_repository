@@ -1,19 +1,18 @@
-import { CircularProgress, Slide, Switch } from "@mui/material";
+import { CircularProgress, Switch } from "@mui/material";
 import axios from "axios";
+import CryptoJS from "crypto-js";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 import { useQuery, useQueryClient } from "react-query";
-import { gray } from "./color";
-import { dummy_aviator, endpoint, rupees } from "../services/urls";
 import { useDispatch, useSelector } from "react-redux";
 import {
   get_user_data_fn,
-  walletamount,
-  walletamountAviator,
+  walletamountAviator
 } from "../services/apicalling";
-import CryptoJS from "crypto-js";
+import { dummy_aviator, rupees } from "../services/urls";
+import { gray } from "./color";
 
 const SpentBetRight = ({ milliseconds, seconds, fk, formik }) => {
   const value =
@@ -41,7 +40,6 @@ const SpentBetRight = ({ milliseconds, seconds, fk, formik }) => {
   const [loding, setloding] = useState(false);
   const [selectedValue, setSelectedValue] = useState("Bet");
   const [betValue, setBetValue] = useState(10);
-  const [gameno, setgameno] = useState({});
 
   useEffect(() => {
     !aviator_login_data && get_user_data_fn(dispatch);

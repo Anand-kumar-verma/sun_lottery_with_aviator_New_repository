@@ -1,14 +1,15 @@
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { Box, Button, CircularProgress, Stack, Switch } from "@mui/material";
 import axios from "axios";
+import CryptoJS from "crypto-js";
 import { useFormik } from "formik";
 import React, { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { CiCircleMinus, CiCirclePlus } from "react-icons/ci";
 import { useQuery, useQueryClient } from "react-query";
 import { useDispatch, useSelector } from "react-redux";
-import { get_user_data_fn, walletamount, walletamountAviator } from "../services/apicalling";
-import { dummy_aviator, endpoint, rupees } from "../services/urls";
+import { get_user_data_fn, walletamountAviator } from "../services/apicalling";
+import { dummy_aviator, rupees } from "../services/urls";
 import { gray } from "./color";
 import CryptoJS from "crypto-js";
 import mouse from "../assets/mouse_click.mp3";
