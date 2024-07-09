@@ -391,20 +391,33 @@ const AirPlane = ({ formik, fk }) => {
                 </p>
               )}
               {waiting_for_next_round ? (
-                <Dialog open={true}
-                className=" lg:!ml-80 ">
-                  <div>
-                     {/* <div className="flex justify-end !mx-2" onClick={false}>x</div> */}
-                     <div className="lg:pt-1 text-center p-2  lg:text-lg  font-bold">Let's complete previous round</div>
-                    <div className="!font-semibold grid grid-cols-3  justify-center lg:w-80 !ml-2 w-[190px] h-16 lg:h-40">
-                      <div className="flex justify-center text-center lg:text-9xl text-5xl lg:px-36  px-28">{`${seconds}.${String(
-                        // phle yha par seconds+1 thA
-                        milliseconds
-                      ).padStart(2, "0")}`}</div>
-                     
-                    </div>
+                <div className=" !w-full !z-50 top-0 !absolute rounded p-5 flex justify-center items-center">
+                <div
+                 className="flex gap-2 !bg-white justify-center !rounded-xl !p-2  lg:ml-0 !ml-20 !-mt-10"
+                  sx={{ width: "100%" }}
+                >
+                  <div className="!bg-purple-300 lg:w-32  w-16 font-extrabold rounded-xl lg:text-9xl text-center !text-black lg:!h-36 h-20 py-2 "
+                  >
+                    {seconds}
                   </div>
-                </Dialog>
+                  <div className=" w-5 lg:w-10 font-extrabold rounded-xl lg:text-9xl text-center !text-black lg:!h-36 py-2 "
+                  >
+                    .
+                  </div>
+                  <div className="!bg-purple-300 lg:w-32  w-16 font-extrabold rounded-xl lg:text-9xl text-center !text-black lg:!h-36 h-20 py-2"
+                   
+                  >
+                   {String(milliseconds)?.padStart(2, "0")?.slice(0, 1)}
+                  </div>
+                  <div
+                   
+                      className="!bg-purple-300 lg:w-32  w-16 font-extrabold rounded-xl lg:text-9xl text-center !text-black lg:!h-36 h-20 py-2"
+                  >
+                   {String(milliseconds)?.padStart(2, "0")?.slice(1, 2) || "0" }
+                  </div>
+                </div>
+              </div>
+
               ) : (
                 <div className="!font-semibold grid grid-cols-3 lg:w-[225px] w-[190px]">
                   <span className="col-span-2">{`${seconds}.${String(
