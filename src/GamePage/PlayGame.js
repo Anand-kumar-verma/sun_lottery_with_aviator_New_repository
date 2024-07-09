@@ -215,10 +215,21 @@ const PlayGame = () => {
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
-      dispatch(just_start_after_waitingFun(false));
-    }, 2000);
-  }, []);
+    const hasReloaded = localStorage.getItem('hasReloadedDashboard');
+
+    if (!hasReloaded) {
+      // Reload the page and set localStorage value
+      localStorage.setItem('hasReloadedDashboard', 'true');
+      window.location.reload();
+    } else {
+      // Execute the setTimeout and dispatch logic after reload
+      setTimeout(() => {
+        dispatch(just_start_after_waitingFun(false));
+      }, 2000);
+    }
+  }, [dispatch]);
+
+
 
   useEffect(() => {
     if (!waiting_aviator) {

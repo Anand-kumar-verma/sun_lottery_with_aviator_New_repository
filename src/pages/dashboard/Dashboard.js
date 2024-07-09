@@ -160,6 +160,7 @@ function Dashboard() {
     localStorage.removeItem("amount_set");
     localStorage.removeItem("Deposit_type");
     localStorage.removeItem("server_provider");
+    localStorage.removeItem('hasReloadedDashboard');
   }, []);
 
   const openbannerFunction = async () => {
